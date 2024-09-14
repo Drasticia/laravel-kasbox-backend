@@ -63,12 +63,13 @@
                                             <th>Price</th>
                                             <th>Category</th>
                                             <th>Stock</th>
+                                            <th>Photo</th>
+                                            <th>Description</th>
                                             <th>Created At</th>
                                             <th>Action</th>
                                         </tr>
                                         @foreach ($products as $product)
                                             <tr>
-
                                                 <td>
                                                     {{$product->name}}
                                                 </td>
@@ -82,7 +83,18 @@
                                                     {{$product->stock}}
                                                 </td>
                                                 <td>
-                                                    {{$product->created_at}}
+                                                    @if ($product->img)
+                                                        <img src="{{ asset('storage/products/'.$product->img)}}" alt=""
+                                                            width="100px" class="img-thumnail">
+                                                    @else
+                                                        <span class="badge badge-danger">No Image</span>
+                                                    @endif
+                                                </td>
+                                                <td>
+                                                    {{$product->description}}
+                                                </td>
+                                                <td>
+                                                    {{ \Carbon\Carbon::parse($product->created_at)->format('d M Y') }}
                                                 </td>
                                                 <td>
                                                     <div class="d-flex justify-content-start">
