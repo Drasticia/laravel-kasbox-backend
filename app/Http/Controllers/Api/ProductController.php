@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Product;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
@@ -25,7 +26,26 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required|min:3|unique:products',
+            'description' => 'nullable|min:10',
+            'price' => 'required|integer',
+            'stock' => 'required|integer',
+            'category' => 'required|in:food,drink,snack',
+            'img' => 'required|image|mimes:png,jpg,jpeg',
+        ]);
+
+        $filename =  time() . '.' . $request->image->extension();
+        $request->img->storeAs('public/products', $filename);
+        $product = \App\Models\Product::creaete([
+            'nama' => $request->name,
+            'description' => $request->description,
+            'price' => (int) $request->price,
+            'stock' => (int) $request->stock,
+            'category' => $request->category,
+            'img' => $filename
+        ]);
+
     }
 
     /**
